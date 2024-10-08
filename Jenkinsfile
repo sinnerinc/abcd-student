@@ -17,13 +17,7 @@ pipeline {
                 echo 'Hello!'
                 sh 'ls -la'
             }
-        }
-		stage('Week 1 - ZAP Scan') {
-			steps {
-				
-			}
-		}
-		
+        }		
 		stage('[ZAP] Baseline passive-scan') {
 			steps {
 				sh '''
