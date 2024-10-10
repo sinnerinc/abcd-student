@@ -21,7 +21,7 @@ pipeline {
 				sleep 5
 			'''
 			sh '''
-				docker run --name zap --rm \\
+				docker run --name zap \\
 					--add-host=host.docker.internal:host-gateway \\
 					-v /home/sinnerinc/abcd-student/.zap:/zap/wrk/:rw \\
 					-v /home/sinnerinc/abcd-student/.zap/reports:/zap/wrk/reports:rw \\
@@ -36,7 +36,13 @@ pipeline {
 					docker cp zap:/zap/wrk/reports/zap_html_report.html ${WORKSPACE}/zap_html_report.html
 					docker cp zap:/zap/wrk/reports/zap_xml_report.xml ${WORKSPACE}/zap_xml_report.xml
 					docker stop zap juice-shop
+					docker rm zap 
 				'''
+
+				defectDojoPublisher(artifact: '${WORKSPACE}/zap_xml_report.xml', 
+                    productName: 'Juice Shop', 
+                    scanType: 'ZAP Scan', 
+                    engagementName: 'mknyc@sinnerinc.net')
 			}
 		}
 }
