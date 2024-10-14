@@ -18,6 +18,8 @@ pipeline {
 			}
 			post {
 				always {
+						
+					sh 'echo scan_done'	
 	/*
 	#				sh '''
 	#					docker cp zap:/zap/wrk/reports/zap_html_report.html ${WORKSPACE}/zap_html_report.html
