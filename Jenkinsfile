@@ -14,7 +14,7 @@ pipeline {
         }
 		stage('[ZAP] Baseline passive-scan') {
 			steps {
-				sh 'osv-scanner scan --lockfile package-lock.json'
+				sh 'osv-scanner scan --lockfile package-lock.json --format json --output osv-scan-results.json'
 			}
 			post {
 				always {
@@ -28,13 +28,13 @@ pipeline {
 	#					docker rm zap 
 	#				'''
 
+*/
+					defectDojoPublisher(artifact: '${WORKSPACE}/osv-scan-results.json', 
+	                   productName: 'Juice Shop', 
+	                   scanType: 'OSV Scan', 
+	                   engagementName: 'mknyc@sinnerinc.net')
 
-	#				defectDojoPublisher(artifact: '${WORKSPACE}/zap_xml_report.xml', 
-	#                   productName: 'Juice Shop', 
-	#                   scanType: 'ZAP Scan', 
-	#                   engagementName: 'mknyc@sinnerinc.net')
-
-	*/
+	
 				}
 
 
