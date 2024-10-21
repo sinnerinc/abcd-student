@@ -20,7 +20,7 @@ pipeline {
             }
 
 			steps {
-				sh 'trufflehog git file://. --only-verified --json '
+				sh 'trufflehog git file://. --only-verified --json > trufflehog-scan-results.json'
 				//--output trufflehog-scan-results.json
 			}
 
