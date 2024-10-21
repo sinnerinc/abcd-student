@@ -7,7 +7,7 @@ pipeline {
         stage('Code checkout from GitHub') {
             steps {
                 script {
-                    cleanWs()
+                    //cleanWs()
                     git credentialsId: 'github-pat', url: 'https://github.com/sinnerinc/abcd-student', branch: 'main'
                 }
             }
@@ -20,7 +20,8 @@ pipeline {
             }
 
 			steps {
-				sh 'trufflehog git file://. --only-verified --json --output trufflehog-scan-results.json'
+				sh 'trufflehog git file://. --only-verified --json '
+				//--output trufflehog-scan-results.json
 			}
 
 			// steps {
