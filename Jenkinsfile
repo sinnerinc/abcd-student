@@ -15,7 +15,7 @@ pipeline {
 		stage('Trufflehog scan') {
 			when {
                 expression {
-                    return false // Change to true to enable the step
+                    return true // Change to true to enable the step
                 }
             }
 
