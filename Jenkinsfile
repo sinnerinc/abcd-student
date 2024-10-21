@@ -12,10 +12,22 @@ pipeline {
                 }
             }
         }
-		stage('[ZAP] Baseline passive-scan') {
+		stage('Trufflehog scan') {
+			when {
+                expression {
+                    return false // Change to true to enable the step
+                }
+            }
+
 			steps {
-				sh 'osv-scanner scan --lockfile package-lock.json --format json --output osv-scan-results.json'
+				sh 'trufflehog git file://. --only-verified --format json --output trufflehog-scan-results.json'
 			}
+
+			// steps {
+			// 	sh 'osv-scanner scan --lockfile package-lock.json --format json --output osv-scan-results.json'
+			// }
+
+
 			post {
 				always {
 						
@@ -29,9 +41,9 @@ pipeline {
 	#				'''
 
 */
-					defectDojoPublisher(artifact: '${WORKSPACE}/osv-scan-results.json', 
+					defectDojoPublisher(artifact: '${WORKSPACE}/trufflehog-scan-results.json', 
 	                   productName: 'Juice Shop', 
-	                   scanType: 'OSV Scan', 
+	                   scanType: 'Trufflehog Scan', 
 	                   engagementName: 'mknyc@sinnerinc.net')
 
 	
