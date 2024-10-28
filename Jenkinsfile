@@ -15,7 +15,7 @@ pipeline {
 		stage('Trufflehog scan') {
 			when {
                 expression {
-                    return true // Change to true to enable the step
+                    return false // Change to true to enable the step
                 }
             }
 
@@ -40,8 +40,8 @@ pipeline {
 	#					docker stop zap juice-shop
 	#					docker rm zap 
 	#				'''
-
 */
+
 					defectDojoPublisher(artifact: '${WORKSPACE}/trufflehog-scan-results.json', 
 	                   productName: 'Juice Shop', 
 	                   scanType: 'Trufflehog Scan', 
@@ -52,6 +52,39 @@ pipeline {
 
 
 			}
+
+			stage('Semgrep scan') {
+			when {
+                expression {
+                    return true // Change to true to enable the step
+                }
+            }
+
+			steps {
+				sh 'semgrep scan --config auto --json --json-output=semgrep-results.json'
+			}
+
+			post {
+				always {
+						
+					sh 'echo scan_done'	
+
+					defectDojoPublisher(artifact: '${WORKSPACE}/semgrep-results.json', 
+	                   productName: 'Juice Shop', 
+	                   scanType: 'Semgrep JSON Report', 
+	                   engagementName: 'mknyc@sinnerinc.net')
+
+	
+				}
+
+
+			}
+
+
+
+
+			
+
 	}
 
 		
