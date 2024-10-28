@@ -12,6 +12,7 @@ pipeline {
                 }
             }
         }
+
 		stage('Trufflehog scan') {
 			when {
                 expression {
@@ -24,33 +25,16 @@ pipeline {
 				//--output trufflehog-scan-results.json
 			}
 
-			// steps {
-			// 	sh 'osv-scanner scan --lockfile package-lock.json --format json --output osv-scan-results.json'
-			// }
-
-
 			post {
 				always {
 						
 					sh 'echo scan_done'	
-	/*
-	#				sh '''
-	#					docker cp zap:/zap/wrk/reports/zap_html_report.html ${WORKSPACE}/zap_html_report.html
-	#					docker cp zap:/zap/wrk/reports/zap_xml_report.xml ${WORKSPACE}/zap_xml_report.xml
-	#					docker stop zap juice-shop
-	#					docker rm zap 
-	#				'''
-*/
 
 					defectDojoPublisher(artifact: '${WORKSPACE}/trufflehog-scan-results.json', 
 	                   productName: 'Juice Shop', 
 	                   scanType: 'Trufflehog Scan', 
 	                   engagementName: 'mknyc@sinnerinc.net')
-
-	
 				}
-
-
 			}
 		}
 
@@ -80,4 +64,5 @@ pipeline {
 
 			}	
     	}
+	}
 }
