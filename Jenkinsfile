@@ -52,8 +52,9 @@ pipeline {
 
 
 			}
+		}
 
-			stage('Semgrep scan') {
+		stage('Semgrep scan') {
 			when {
                 expression {
                     return true // Change to true to enable the step
@@ -77,16 +78,6 @@ pipeline {
 	
 				}
 
-
-			}
-
-
-
-
-			
-
-	}
-
-		
-    }
+			}	
+    	}
 }
